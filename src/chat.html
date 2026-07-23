@@ -450,13 +450,11 @@ function addChatMessage(name, text, timestamp) {
   p.appendChild(document.createTextNode(text));
 
   if (timestamp) {
-    let timeStr = " [" + new Date(timestamp).toLocaleString() + "]";
+    let timeSource = timestamp || Date.now();
+    let timeStr = " [" + new Date(timeSource).toLocaleString() + "]";
     p.appendChild(document.createTextNode(timeStr));
   }
 
-  let timeSource = timestamp || Date.now();
-  let timeStr = " [" + new Date(timeSource).toLocaleString() + "]";
-  p.appendChild(document.createTextNode(timeStr));
   
   // Append the new chat line, making sure that if the chatlog was scrolled to the bottom
   // before, it remains scrolled to the bottom, and otherwise the scroll position doesn't
