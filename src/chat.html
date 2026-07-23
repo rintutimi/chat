@@ -297,7 +297,7 @@ function startChat() {
   roomname = roomname.replace(/[^a-zA-Z0-9_-]/g, "").replace(/_/g, "-").toLowerCase();
 
   if (roomname.length > 32 && !roomname.match(/^[0-9a-f]{64}$/)) {
-    addChatMessage("ERROR", "Invalid room name.");
+    addChatMessage("ERROR", "Invalid room name.", Date.now());
     return;
   }
 
@@ -405,7 +405,7 @@ function join() {
     let data = JSON.parse(event.data);
 
     if (data.error) {
-      addChatMessage(null, "* Error: " + data.error);
+      addChatMessage(null, "* Error: " + data.error, Date.now());
     } else if (data.joined) {
       let p = document.createElement("p");
       p.innerText = data.joined;
@@ -423,7 +423,7 @@ function join() {
     } else {
       // A regular chat message.
       if (data.timestamp > lastSeenTimestamp) {
-        addChatMessage(data.name, data.message);
+        addChatMessage(data.name, data.message, data.timestamp);
         lastSeenTimestamp = data.timestamp;
       }
     }
@@ -448,7 +448,11 @@ function addChatMessage(name, text) {
     p.appendChild(tag);
   }
   p.appendChild(document.createTextNode(text));
-  p.appendChild(document.createTextNode(" [" + new Date().toLocaleString() + "]"));
+
+  if (timestamp) {
+    let timeStr = " [" + new Date(timestamp).toLocaleString() + "]";
+    p.appendChild(document.createTextNode(timeStr));
+  }
   
   // Append the new chat line, making sure that if the chatlog was scrolled to the bottom
   // before, it remains scrolled to the bottom, and otherwise the scroll position doesn't
