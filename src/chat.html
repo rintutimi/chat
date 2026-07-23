@@ -448,7 +448,8 @@ function addChatMessage(name, text) {
     p.appendChild(tag);
   }
   p.appendChild(document.createTextNode(text));
-
+  p.appendChild(document.createTextNode(" [" + new Date().toLocaleString() + "]"));
+  
   // Append the new chat line, making sure that if the chatlog was scrolled to the bottom
   // before, it remains scrolled to the bottom, and otherwise the scroll position doesn't
   // change.
